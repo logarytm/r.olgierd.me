@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb",
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "config/webpack/production.js"
+      }
+    }
+  },
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "rules": {
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }]
+  }
+}
