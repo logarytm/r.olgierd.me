@@ -1,34 +1,38 @@
 import 'es6-promise';
 import 'whatwg-fetch';
 
-import '~/scss/main.scss';
-
 import UniversalRouter from 'universal-router';
 
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
-import { allStops } from '~/stops.js';
+import StopRepository from '~/stop-repository.js';
+import StopListByStreet from '~/stop-list-by-street.js';
 
-allStops().then(console.log);
+import '~/index.scss';
+
+console.log(StopRepository);
 
 const hx = hyperx(hyperscript);
-const chrome = (function createChrome() {
-  return hx`
-    <div id="viewport"></div>
+const root = hx`
+    <div id="main"></div>
   `;
-}());
-document.body.appendChild(chrome);
+document.body.appendChild(root);
 
 const routes = [
   {
     path: '/',
-    action: () => '<h1>Home</h1>',
+    action() {
+      return StopRepository
+        .allByStreets()
+        .then(streets => StopListByStreet(streets));
+    },
   },
 ];
 
 const router = new UniversalRouter(routes);
 
 router.resolve(window.location).then((html) => {
-  document.querySelector('#viewport').innerHTML = html;
+  document.querySelector('#main').innerHTML = '';
+  document.querySelector('#main').appendChild(html);
 });
