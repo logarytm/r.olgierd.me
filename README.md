@@ -1,4 +1,4 @@
-# MPK Rzeszów
+# Rzeszowski Autobus
 
 ## Building
 
