@@ -11,12 +11,17 @@ export default function CachedRepository(repositoryName, implementation) {
       Math.abs(Date.now() - result.timestamp) > 1000 * implementation.cacheTTL;
   }
 
-  function wrapInCache(methodName) {
+  function wrapInCache(f) {
+    const methodName = f.name;
+    if (!name) {
+      throw new TypeError('Repository methods must have names.');
+    }
+
     return function cacheWrapped(...args) {
       return localForage.getItem(cacheTag(methodName, args))
         .then(function validate(result) {
           if (shouldRedownload(result)) {
-            return implementation[methodName](...args)
+            return f(...args)
               .then(function store(data) {
                 return localForage.setItem(cacheTag(methodName, args), {
                   data,
@@ -32,7 +37,7 @@ export default function CachedRepository(repositoryName, implementation) {
 
   // using mapObjIndexed instead of map because we want to access the keys as
   // well
-  return R.mapObjIndexed(function wrapFunctionsInCache(value, key) {
-    return typeof value === 'function' ? wrapInCache(key) : value;
+  return R.mapObjIndexed(function wrapFunctionsInCache(value) {
+    return typeof value === 'function' ? wrapInCache(value) : value;
   })(implementation);
 }
