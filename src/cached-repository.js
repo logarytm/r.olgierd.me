@@ -13,7 +13,7 @@ export default function CachedRepository(repositoryName, implementation) {
 
   function wrapInCache(f) {
     const methodName = f.name;
-    if (!name) {
+    if (!methodName) {
       throw new TypeError('Repository methods must have names.');
     }
 
@@ -35,8 +35,6 @@ export default function CachedRepository(repositoryName, implementation) {
     };
   }
 
-  // using mapObjIndexed instead of map because we want to access the keys as
-  // well
   return R.mapObjIndexed(function wrapFunctionsInCache(value) {
     return typeof value === 'function' ? wrapInCache(value) : value;
   })(implementation);
