@@ -12,8 +12,9 @@
     "mocha": true
   },
   "rules": {
-    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
     "import/extensions": "off",
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
+    "no-use-before-define": ["error", { "functions": false }],
     "no-unused-vars": ["error", { "args": "after-used", "argsIgnorePattern": "^_$" }]
   }
 }

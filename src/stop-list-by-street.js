@@ -1,6 +1,8 @@
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
+import onTargetsMatchingSelector from '~/on-targets-matching-selector.js';
+
 const hx = hyperx(hyperscript);
 
 function toggleStreet(e) {
@@ -24,13 +26,7 @@ export default function StopListByStreet(streets) {
     </ul>
   `;
 
-  html.addEventListener('click', function onClick(e) {
-    if (e.target.matches('.stops__street-name')) {
-      return toggleStreet(e);
-    }
-
-    return true;
-  });
+  html.addEventListener('click', onTargetsMatchingSelector('.stops__street-name', toggleStreet));
 
   return html;
 }
