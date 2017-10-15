@@ -16,7 +16,7 @@ export default function StopListByStreet(streets) {
       ${streets.map((street, index) => hx`
         <li>
           <button class="stops__street-name" type="button">${street.name}</button>
-          <ul class="stops__per-street-list" data-street-index="${index}">
+          <ul class="u-visually-hidden stops__per-street-list" data-street-index="${index}">
             ${street.stops.map(stop => hx`
               <li><a href="/${stop.id}">${stop.name}</a></li>
             `)}
