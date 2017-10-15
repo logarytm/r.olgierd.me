@@ -8,6 +8,7 @@ import hyperx from 'hyperx';
 
 import StopRepository from '~/stop-repository.js';
 import StopListByStreet from '~/stop-list-by-street.js';
+import createDepartureObservable from '~/departure-observable.js';
 
 import '~/index.scss';
 
@@ -26,6 +27,14 @@ const routes = [
       return StopRepository
         .allByStreets()
         .then(streets => StopListByStreet(streets));
+    },
+  },
+  {
+    path: '/:id',
+    action({ params }) {
+      const observable = createDepartureObservable(params.id, { refreshInterval: 30 });
+      observable.observe(console.log);
+      observable.refresh();
     },
   },
 ];
