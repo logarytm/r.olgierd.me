@@ -3,13 +3,15 @@ import 'whatwg-fetch';
 
 import UniversalRouter from 'universal-router';
 
+import * as R from 'ramda';
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
-import StopRepository from '~/stop-repository.js';
-import StopListByStreet from '~/stop-list-by-street.js';
+import stopRepository from '~/stop-repository.js';
 import createDepartureObservable from '~/departure-observable.js';
-import mountNode from '~/mount-node.js';
+
+import showAllStops from '~/show-all-stops.js';
+import showDepartures from '~/show-departures.js';
 
 import '~/index.scss';
 
@@ -22,51 +24,11 @@ document.body.appendChild(root);
 const routes = [
   {
     path: '/',
-    action() {
-      return StopRepository
-        .allByStreets()
-        .then(streets => StopListByStreet(streets));
-    },
+    action: R.partial(showAllStops, [{ stopRepository }]),
   },
   {
     path: '/:id',
-    action({ params }) {
-      // We need the departures to refresh in place, so we create and return a
-      // root node which we then update when new data arrives. This is a bit
-      // hacky and maybe may be done in a better way?
-      //
-      // FIXME: Call observable.stop() after finishing this action.
-
-      const observable = createDepartureObservable(params.id, { refreshInterval: 30 });
-      observable.observe(renderNewDepartures);
-      observable.refresh();
-
-      const destination = hx`<div></div>`;
-
-      function DepartureRow(departure) {
-        return hx`
-          <tr class="departure-table__row">
-            <td class="departure-table__line">${departure.line}</td>
-            <td class="departure-table__direction">${departure.direction}</td>
-            <td class="departure-table__time">${departure.time}</td>
-          </tr>
-        `;
-      }
-
-      function DepartureTable(departures) {
-        return hx`
-          <table class="departure-table">
-            ${departures.map(DepartureRow)}
-          </table>
-        `;
-      }
-
-      function renderNewDepartures(departures) {
-        mountNode(DepartureTable(departures), destination);
-      }
-
-      return destination;
-    },
+    action: R.partial(showDepartures, [{ createDepartureObservable }]),
   },
 ];
 
@@ -76,3 +38,15 @@ router.resolve(window.location).then((html) => {
   document.querySelector('#main').innerHTML = '';
   document.querySelector('#main').appendChild(html);
 });
+
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', function() {
+//     navigator.serviceWorker.register('/sw.js').then(function(registration) {
+//       // Registration was successful
+//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
+//     }, function(err) {
+//       // registration failed :(
+//       console.log('ServiceWorker registration failed: ', err);
+//     });
+//   });
+// }
