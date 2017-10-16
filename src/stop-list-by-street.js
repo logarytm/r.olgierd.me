@@ -18,7 +18,7 @@ export default function StopListByStreet(streets) {
           <button class="stops__street-name" type="button">${street.name}</button>
           <ul class="u-hidden stops__per-street-list" data-street-index="${index}">
             ${street.stops.map(stop => hx`
-              <li><a href="/${stop.id}">${stop.name}</a></li>
+              <li><a href="/departures/from-stop/${stop.id}">${stop.name}</a></li>
             `)}
           </ul>
         </li>`,

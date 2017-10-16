@@ -28,19 +28,24 @@ export default CachedRepository('stop', {
   },
 
   all() {
-    return this.allByStreets().then(R.compose(R.flatten, R.map(R.prop('stops'))));
+    return this.allByStreets()
+      .then(R.compose(R.flatten, R.map(R.prop('stops'))));
   },
 
   allMatching(string) {
+    if (string.trim() === '') {
+      return this.all();
+    }
+
     return this.all()
       .then((stops) => {
         if (globalFuzzySearch === null) {
           globalFuzzySearch = createFuzzySearch(R.map(stop =>
-            R.merge(stop, { name: stop.name.toLowerCase() }), stops));
+            R.merge(stop, { name: stop.name }), stops));
         }
 
-        return globalFuzzySearch(string.toLowerCase(), {
-          inclusionThreshold: 0.5,
+        return globalFuzzySearch(string, {
+          inclusionThreshold: 0.95,
         });
       });
   },

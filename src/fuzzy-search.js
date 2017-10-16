@@ -1,17 +1,19 @@
 export default function createFuzzySearch(possibleResults) {
   function calculateScore(string, pattern) {
-    const factor = 0.1;
     let lastMatch = -1;
-    let score = 0.0;
+    const scores = [];
 
-    for (let i = 0, j = 0; i < string.length && j < pattern.length; i += 1, j += 1) {
-      if (string[i] === pattern[j]) {
-        score += factor / Math.abs(i - lastMatch);
-        lastMatch = i;
+    for (let i = 0; i < string.length; i += 1) {
+      scores.push(0.0);
+      for (let j = 0; j < pattern.length && i + j < string.length; j += 1) {
+        if (string[i + j].toLowerCase() === pattern[j].toLowerCase()) {
+          scores[i] += 1 / (Math.abs(i + j - lastMatch) + 1);
+          lastMatch = i;
+        }
       }
     }
 
-    return score;
+    return scores.reduce((x, y) => Math.max(x, y), 0);
   }
 
   function scoresFor(pattern) {
