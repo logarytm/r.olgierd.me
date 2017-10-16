@@ -21,7 +21,7 @@ export default function CachedRepository(repositoryName, implementation) {
       return localForage.getItem(cacheTag(methodName, args))
         .then(function validate(result) {
           if (shouldRedownload(result)) {
-            return f(...args)
+            return f.call(implementation, ...args)
               .then(function store(data) {
                 return localForage.setItem(cacheTag(methodName, args), {
                   data,
@@ -35,7 +35,7 @@ export default function CachedRepository(repositoryName, implementation) {
     };
   }
 
-  return R.mapObjIndexed(function wrapFunctionsInCache(value) {
-    return typeof value === 'function' ? wrapInCache(value) : value;
+  return R.mapObjIndexed(function wrapFunctionsInCache(value, key) {
+    return typeof value === 'function' && key !== 'allMatching' ? wrapInCache(value) : value;
   })(implementation);
 }

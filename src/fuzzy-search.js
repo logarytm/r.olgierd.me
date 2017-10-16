@@ -1,37 +1,28 @@
 export default function createFuzzySearch(possibleResults) {
   function calculateScore(string, pattern) {
-    const SCORE_INSIDE = 1;
-    const SCORE_BEGINNING = 3;
+    const factor = 0.1;
+    let lastMatch = -1;
+    let score = 0.0;
 
-    const words = string.split(/[^A-Za-z0-9]/g);
-
-    return words.reduce(function matchWord({ score, patternChar }, word) {
-      if (word[0] === pattern[patternChar]) {
-        return {
-          score: score + SCORE_BEGINNING,
-          patternChar: patternChar + (patternChar === pattern.length - 1 ? 0 : 1),
-        };
-      } else if (word.includes(pattern[patternChar])) {
-        return {
-          score: score + SCORE_INSIDE,
-          patternChar: patternChar + (patternChar === pattern.length - 1 ? 0 : 1),
-        };
+    for (let i = 0, j = 0; i < string.length && j < pattern.length; i += 1, j += 1) {
+      if (string[i] === pattern[j]) {
+        score += factor / Math.abs(i - lastMatch);
+        lastMatch = i;
       }
+    }
 
-      return { score, patternChar };
-    }, { score: 0, patternChar: 0 }).score;
+    return score;
   }
 
   function scoresFor(pattern) {
     return possibleResults.map(function elementWithScore(element) {
-      return { element, score: calculateScore(element, pattern) };
+      return { element, score: calculateScore(element.name, pattern) };
     });
   }
 
   function search(pattern, { inclusionThreshold }) {
     const scores = scoresFor(pattern);
-    const total = scores
-      .reduce((memo, { score }) => memo + score, 0);
+    const total = scores.reduce((memo, { score }) => Math.max(memo, score), 0);
 
     return scores
       .filter(({ score }) => score / total >= inclusionThreshold)
