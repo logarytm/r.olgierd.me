@@ -7,7 +7,7 @@ const hx = hyperx(hyperscript);
 
 function toggleStreet(e) {
   const street = e.target.parentNode.querySelector('.stops__per-street-list');
-  street.classList.toggle('u-visually-hidden');
+  street.classList.toggle('u-hidden');
 }
 
 export default function StopListByStreet(streets) {
@@ -16,7 +16,7 @@ export default function StopListByStreet(streets) {
       ${streets.map((street, index) => hx`
         <li>
           <button class="stops__street-name" type="button">${street.name}</button>
-          <ul class="u-visually-hidden stops__per-street-list" data-street-index="${index}">
+          <ul class="u-hidden stops__per-street-list" data-street-index="${index}">
             ${street.stops.map(stop => hx`
               <li><a href="/${stop.id}">${stop.name}</a></li>
             `)}
