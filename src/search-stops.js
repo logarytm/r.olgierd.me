@@ -16,9 +16,7 @@ export default function searchStops({ stopRepository }) {
   const destination = root.querySelector('.stop-search__stops');
 
   input.addEventListener('input', debounce(() => {
-    stopRepository.allMatching(input.value).then(stops => {
-      replaceStops(stops);
-    });
+    stopRepository.allMatching(input.value).then(replaceStops);
   }, 250));
 
   function replaceStops(stops) {
