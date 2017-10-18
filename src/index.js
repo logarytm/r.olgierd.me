@@ -3,16 +3,10 @@ import 'whatwg-fetch';
 
 import UniversalRouter from 'universal-router';
 
-import * as R from 'ramda';
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
-import stopRepository from '~/stop-repository.js';
-import createDepartureObservable from '~/departure-observable.js';
-
-import showAllStops from '~/show-all-stops.js';
-import showDepartures from '~/show-departures.js';
-import searchStops from '~/search-stops.js';
+import routes from '~/routes.js';
 
 import '~/index.scss';
 
@@ -21,21 +15,6 @@ const root = hx`
     <div id="main"></div>
   `;
 document.body.appendChild(root);
-
-const routes = [
-  {
-    path: '/',
-    action: R.partial(showAllStops, [{ stopRepository }]),
-  },
-  {
-    path: '/stops',
-    action: R.partial(searchStops, [{ stopRepository }]),
-  },
-  {
-    path: '/departures/from-stop/:id',
-    action: R.partial(showDepartures, [{ createDepartureObservable }]),
-  },
-];
 
 const router = new UniversalRouter(routes);
 
