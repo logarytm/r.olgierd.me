@@ -3,12 +3,11 @@ import * as R from 'ramda';
 import createFuzzySearch from '~/fuzzy-search.js';
 import CachedRepository from '~/cached-repository.js';
 
-let globalFuzzySearch = null;
+let globalSearch = null;
+const stopNameCache = new Map();
 
-export default CachedRepository('stop', {
-  cacheTTL: 24 * 60 * 60,
-
-  allByStreets() {
+export default {
+  findAllByStreets() {
     const convertSingleStop = function convertSingleStop([id, name]) {
       return { id, name };
     };
@@ -27,26 +26,32 @@ export default CachedRepository('stop', {
       .then(convertStops);
   },
 
-  all() {
-    return this.allByStreets()
+  getNameById(id) {
+    return this
+      .findAll()
+      .then(allStops => allStops.find(stop => stop.id === id).name);
+  },
+
+  findAll() {
+    return this.findAllByStreets()
       .then(R.compose(R.flatten, R.map(R.prop('stops'))));
   },
 
-  allMatching(string) {
+  findAllMatching(string) {
     if (string.trim() === '') {
-      return this.all();
+      return this.findAll();
     }
 
-    return this.all()
+    return this.findAll()
       .then((stops) => {
-        if (globalFuzzySearch === null) {
-          globalFuzzySearch = createFuzzySearch(R.map(stop =>
+        if (globalSearch === null) {
+          globalSearch = createFuzzySearch(R.map(stop =>
             R.merge(stop, { name: stop.name }), stops));
         }
 
-        return globalFuzzySearch(string, {
+        return globalSearch(string, {
           inclusionThreshold: 0.95,
         });
       });
   },
-});
+};

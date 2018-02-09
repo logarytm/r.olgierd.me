@@ -16,19 +16,19 @@ export default function searchStops({ stopRepository }) {
   const destination = root.querySelector('.stop-search__stops');
 
   input.addEventListener('input', debounce(() => {
-    stopRepository.allMatching(input.value).then(replaceStops);
+    stopRepository.findAllMatching(input.value).then(replaceStops);
   }, 250));
 
   function replaceStops(stops) {
     mountNode(StopList(stops), destination);
   }
 
-  stopRepository.all()
+  stopRepository.findAll()
     .then((stops) => {
       replaceStops(stops);
     });
 
-  return root;
+  return { title: 'Szukaj przystanków', html: root };
 }
 
 // https://remysharp.com/2010/07/21/throttling-function-calls

@@ -5,7 +5,13 @@ import mountNode from '~/mount-node.js';
 
 const hx = hyperx(hyperscript);
 
-export default function showDepartures({ createDepartureObservable }, { params }) {
+export default function showDepartures({
+  createDepartureObservable,
+  stopRepository,
+}, { params }) {
+
+  params.id = parseInt(params.id);
+
   // We need the departures to refresh in place, so we create and return a
   // root node which we then update when new data arrives. This is a bit
   // hacky and maybe may be done in a better way?
@@ -22,7 +28,7 @@ export default function showDepartures({ createDepartureObservable }, { params }
     return hx`
       <tr class="departure-table__row">
         <td class="departure-table__line">${departure.line}</td>
-        <td class="departure-table__direction">${departure.direction}</td>
+        <td class="departure-table__direction ${departure.direction.length > 30 ? 'departure-table__direction--long' : ''}"><span>${departure.direction}</span></td>
         <td class="departure-table__time">${departure.time}</td>
       </tr>
     `;
@@ -40,5 +46,11 @@ export default function showDepartures({ createDepartureObservable }, { params }
     mountNode(DepartureTable(departures), destination);
   }
 
-  return destination;
+  return stopRepository.getNameById(params.id)
+    .then(name => {
+      return {
+        title: name,
+        html: destination,
+      };
+    });
 }
