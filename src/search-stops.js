@@ -8,7 +8,7 @@ const hx = hyperx(hyperscript);
 
 export default function searchStops({ stopRepository }) {
   const root = hx`<div>
-    <input class="stop-search__input" type="text" placeholder="Type here…" autofocus />
+    <input class="stop-search__input" type="text" placeholder="Quo vadis?" autofocus />
     <div class="stop-search__stops"></div>
   </div>`;
 
@@ -26,6 +26,7 @@ export default function searchStops({ stopRepository }) {
   stopRepository.findAll()
     .then((stops) => {
       replaceStops(stops);
+      input.focus();
     });
 
   return { title: 'Szukaj przystanków', html: root };
