@@ -2,7 +2,7 @@
   "name": "autobus",
   "scripts": {
     "build": "npm run build-js",
-    "build-js": "webpack --optimize-minimize --config config/webpack/production.js",
+    "build-js": "webpack --config config/webpack/production.js",
     "clean": "del build/",
     "lint": "npm run lint-js",
     "lint-js": "eslint --config config/eslint.json src/ *.js",
