@@ -1,6 +1,8 @@
 import * as R from 'ramda';
+import fuzzysearch from 'fuzzysearch';
 
 import createFuzzySearch from '~/fuzzy-search.js';
+import fetchWithCors from '~/fetch-with-cors.js';
 import CachedRepository from '~/cached-repository.js';
 
 let globalSearch = null;
@@ -21,7 +23,7 @@ export default {
 
     const convertStops = R.map(convertSingleStreet);
 
-    return fetch('https://cors-anywhere.herokuapp.com/http://einfo.erzeszow.pl/Home/GetBusStopList?q=&ttId=0')
+    return fetchWithCors('http://einfo.erzeszow.pl/Home/GetBusStopList?q=&ttId=0')
       .then(response => response.json())
       .then(convertStops);
   },
@@ -37,21 +39,17 @@ export default {
       .then(R.compose(R.flatten, R.map(R.prop('stops'))));
   },
 
-  findAllMatching(string) {
-    if (string.trim() === '') {
+  findAllMatching(query) {
+    if (query.trim() === '') {
       return this.findAll();
     }
 
+    query = query.toLowerCase();
+
     return this.findAll()
       .then((stops) => {
-        if (globalSearch === null) {
-          globalSearch = createFuzzySearch(R.map(stop =>
-            R.merge(stop, { name: stop.name }), stops));
-        }
-
-        return globalSearch(string, {
-          inclusionThreshold: 0.95,
-        });
+        return stops.filter(stop =>
+          fuzzysearch(query, stop.name.toLowerCase()));
       });
   },
 };

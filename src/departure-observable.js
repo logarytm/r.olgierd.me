@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import parseXMLString from '~/parse-xml-string.js';
+import fetchWithCors from '~/fetch-with-cors.js';
 
 function convertDepartures(rootNode) {
   return R.map(function convertSingleDeparture(departureNode) {
@@ -24,7 +25,7 @@ export default function createDepartureObservable(stopId, { refreshInterval }) {
   }
 
   function refresh() {
-    return fetch(`https://cors-anywhere.herokuapp.com/http://einfo.erzeszow.pl/Home/GetTimetableReal?busStopId=${stopId}`)
+    return fetchWithCors(`http://einfo.erzeszow.pl/Home/GetTimetableReal?busStopId=${stopId}`)
       .then(response => response.text())
       .then(parseXMLString)
       .then(convertDepartures)
