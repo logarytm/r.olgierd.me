@@ -25,7 +25,7 @@ window.addEventListener('click', onTargetsMatchingSelector('a[href]', e => {
 }));
 
 window.addEventListener('popstate', e => {
-  navigate(e.state);
+  resolve(e.state);
 });
 
 function navigate(path) {
@@ -44,4 +44,10 @@ function resolve(path) {
   });
 }
 
-resolve(window.location);
+resolve(window.location)
+  .then(() => {
+    history.replaceState(
+      window.location.pathname,
+      document.title,
+      window.location.pathname);
+  });
