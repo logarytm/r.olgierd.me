@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import fuzzysearch from 'fuzzysearch';
 
-import createFuzzySearch from '~/fuzzy-search.js';
 import fetchWithCors from '~/fetch-with-cors.js';
 import CachedRepository from '~/cached-repository.js';
 
