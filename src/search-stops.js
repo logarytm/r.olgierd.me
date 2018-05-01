@@ -7,7 +7,7 @@ import hyperx from 'hyperx';
 const hx = hyperx(hyperscript);
 
 export default function searchStops({ stopRepository }) {
-  const root = hx`<div>
+  const root = hx`<div class="stop-search">
     <input class="stop-search__input" type="text" placeholder="Quo vadis?" autofocus />
     <div class="stop-search__stops"></div>
   </div>`;
