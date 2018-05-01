@@ -18,8 +18,6 @@ const stopRepository = CachedRepository(originalStopRepository, {
     },
   },
 });
-console.log(stopRepository)
-console.log(originalStopRepository)
 
 export default [
   {

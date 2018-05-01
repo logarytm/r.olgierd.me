@@ -10,7 +10,7 @@ export default function showDepartures({
   stopRepository,
 }, { params }) {
 
-  params.id = parseInt(params.id);
+  params.id = parseInt(params.id, 10);
 
   // We need the departures to refresh in place, so we create and return a
   // root node which we then update when new data arrives. This is a bit

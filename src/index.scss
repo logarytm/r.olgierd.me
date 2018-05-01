@@ -69,6 +69,33 @@ button, input, select, textarea {
   text-decoration: none;
 }
 
+.stop-search__input {
+  background-color: #e5e5e5;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.5ex;
+  padding: 1.5ex 1.5ex calc(1.5ex - 2px) 1.5ex;
+  border: #ddd solid;
+  border-width: 0 0 2px 0;
+
+  &:focus {
+    background-color: #ddd;
+    outline: none;
+    border-color: #bbb;
+  }
+}
+
+.stop-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-weight: bold;
+}
+
+.stop-list__link {
+  @extend .stops__stop-name;
+}
+
 .u-visually-hidden {
   position: absolute;
   clip: rect(0 0 0 0);
@@ -126,13 +153,24 @@ button, input, select, textarea {
   box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 
-.navbar__title {
-}
-
-#title {
+.navbar__home-link {
   color: #fff;
   text-decoration: none;
   line-height: 6ex;
   display: block;
+  float: left;
   padding: 0 1.5ex;
+}
+
+.navbar__search-link {
+  float: right;
+  text-decoration: none;
+  height: 6ex;
+  display: block;
+}
+
+.navbar__search-icon {
+  position: relative;
+  margin-top: -50%;
+  top: 50%;
 }

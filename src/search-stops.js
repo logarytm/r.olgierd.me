@@ -8,7 +8,7 @@ const hx = hyperx(hyperscript);
 
 export default function searchStops({ stopRepository }) {
   const root = hx`<div>
-    <input class="stop-search__input" type="text" autofocus />
+    <input class="stop-search__input" type="text" placeholder="Type here…" autofocus />
     <div class="stop-search__stops"></div>
   </div>`;
 

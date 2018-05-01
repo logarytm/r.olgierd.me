@@ -5,9 +5,11 @@ const hx = hyperx(hyperscript);
 
 export default function StopList(stops) {
   return hx`
-    <ul>
+    <ul class="stop-list">
       ${stops.map(stop => hx`
-        <li><a href="/departures/from-stop/${stop.id}">${stop.name}</a></li>
+        <li class="stop-list__item">
+          <a class="stop-list__link" href="/departures/from-stop/${stop.id}">${stop.name}</a>
+        </li>
       `)}
     </ul>
   `;
