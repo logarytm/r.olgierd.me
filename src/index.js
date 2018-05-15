@@ -16,7 +16,7 @@ const hx = hyperx(hyperscript);
 const router = new UniversalRouter(routes);
 
 window.addEventListener('click', onTargetsMatchingSelector('a[href]', e => {
-  if (e.target.host === window.location.host) {
+  if (e.target.host === window.location.host && e.button === 0) {
     navigate(e.target.pathname);
 
     e.preventDefault();
