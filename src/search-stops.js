@@ -7,38 +7,38 @@ import hyperx from 'hyperx';
 const hx = hyperx(hyperscript);
 
 export default function searchStops({ stopRepository }) {
-  const root = hx`<div class="stop-search">
+    const root = hx`<div class="stop-search">
     <input class="stop-search__input" type="text" placeholder="Quo vadis?" autofocus />
-    <div class="stop-search__stops"></div>
-  </div>`;
+        <div class="stop-search__stops"></div>
+    </div>`;
 
-  const input = root.querySelector('.stop-search__input');
-  const destination = root.querySelector('.stop-search__stops');
+    const input = root.querySelector('.stop-search__input');
+    const destination = root.querySelector('.stop-search__stops');
 
-  input.addEventListener('input', debounce(() => {
-    stopRepository.findAllMatching(input.value).then(replaceStops);
-  }, 250));
+    input.addEventListener('input', debounce(() => {
+        stopRepository.findAllMatching(input.value).then(replaceStops);
+    }, 250));
 
-  function replaceStops(stops) {
-    mountNode(StopList(stops), destination);
-  }
+    function replaceStops(stops) {
+        mountNode(StopList(stops), destination);
+    }
 
-  stopRepository.findAll()
-    .then((stops) => {
-      replaceStops(stops);
-      input.focus();
-    });
+    stopRepository.findAll()
+        .then((stops) => {
+            replaceStops(stops);
+            input.focus();
+        });
 
-  return { title: 'Szukaj przystanków', html: root };
+    return { title: 'Szukaj przystanków', html: root };
 }
 
 // https://remysharp.com/2010/07/21/throttling-function-calls
 function debounce(fn, delay) {
-  let timer = null;
-  return function debounced(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
+    let timer = null;
+    return function debounced(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            fn(...args);
+        }, delay);
+    };
 }
