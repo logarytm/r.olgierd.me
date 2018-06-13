@@ -5,6 +5,8 @@ import mountNode from '~/mount-node.js';
 
 import ticketsIcon from '~/tickets.svg';
 
+const refreshInterval = 30;
+
 const hx = hyperx(hyperscript);
 
 export default function showDepartures(
@@ -17,17 +19,21 @@ export default function showDepartures(
 
     params.id = parseInt(params.id, 10);
 
+    let lastRefreshedAt = null;
+
     // We need the departures to refresh in place, so we create and return a
     // root node which we then update when new data arrives. This is a bit
     // hacky and maybe may be done in a better way?
     //
     // FIXME: Call observable.stop() after finishing this action.
 
-    const observable = createDepartureObservable(params.id, { refreshInterval: 30 });
+    const observable = createDepartureObservable(params.id, { refreshInterval });
     observable.observe(renderNewDepartures);
     observable.refresh();
+    
+    setInterval(updateNotice, 10 * 1000);
 
-    const destination = hx`<div></div>`;
+    const destination = hx`<div><p class="notice">Loading…</p></div>`;
 
     function DepartureRow(departure) {
         const extraDirectionClass = departure.direction.length > 30 ? 'departure-table__direction--long' : '';
@@ -53,14 +59,31 @@ export default function showDepartures(
 
     function DepartureTable(departures) {
         return hx`
-        <table class="departure-table">
-            ${departures.map(DepartureRow)}
-        </table>
-    `;
+        <div>
+            <table class="departure-table">
+                ${departures.map(DepartureRow)}
+            </table>
+            <p class="notice"></p>
+        </div>
+        `;
+    }
+
+    function updateNotice() {
+        const now = new Date();
+        let minutesSinceRefresh = Math.floor((now - lastRefreshedAt) / (1000 * 60));
+        if (lastRefreshedAt === null || minutesSinceRefresh < 60) {
+            return;
+        }
+
+        destination.querySelector('.notice').innerHTML =
+            `Nieaktualne dane (<a href="${window.location.pathname}">odśwież teraz</a>).`;
     }
 
     function renderNewDepartures(departures) {
+        lastRefreshedAt = new Date();
+
         mountNode(DepartureTable(departures), destination);
+        updateNotice();
     }
 
     return stopRepository.getNameById(params.id)

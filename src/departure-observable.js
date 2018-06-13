@@ -10,7 +10,7 @@ function convertDepartures(rootNode) {
             line: departureNode.getAttribute('nr'),
             direction: departureNode.getAttribute('dir'),
             hasTicketMachine: vehicleAttributes.includes('B'),
-            time: departureNode.querySelector('S').getAttribute('t'),
+            time: departureNode.querySelector('S').getAttribute('t').replace('<1min', '<1 min'),
         };
     }, rootNode.querySelectorAll('R'));
 }
