@@ -48,7 +48,7 @@ export default {
         return this.findAll()
             .then((stops) => {
                 return stops.filter(stop =>
-                    fuzzysearch(query, stop.name.toLowerCase()));
+                    stop.name.toLowerCase().includes(query));
             });
     },
 };
