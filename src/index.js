@@ -44,6 +44,10 @@ function resolve(path) {
     });
 }
 
+if (navigator.userAgent.includes('Windows NT')) {
+    document.body.style.fontFamily = 'Helvetica, Arial, sans-serif';
+}
+
 resolve(window.location)
     .then(() => {
         history.replaceState(
