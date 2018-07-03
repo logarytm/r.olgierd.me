@@ -1,11 +1,6 @@
 import * as R from 'ramda';
-import fuzzysearch from 'fuzzysearch';
 
 import fetchWithCors from '~/fetch-with-cors.js';
-import CachedRepository from '~/cached-repository.js';
-
-let globalSearch = null;
-const stopNameCache = new Map();
 
 export default {
     findAllByStreets() {

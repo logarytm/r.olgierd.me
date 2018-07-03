@@ -24,13 +24,11 @@ export default function showDepartures(
     // We need the departures to refresh in place, so we create and return a
     // root node which we then update when new data arrives. This is a bit
     // hacky and maybe may be done in a better way?
-    //
-    // FIXME: Call observable.stop() after finishing this action.
 
     const observable = createDepartureObservable(params.id, { refreshInterval });
     observable.observe(renderNewDepartures);
     observable.refresh();
-    
+
     setInterval(updateNotice, 10 * 1000);
 
     const destination = hx`<div><p class="notice">Loading…</p></div>`;

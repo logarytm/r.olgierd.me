@@ -1,7 +1,7 @@
 export default function fetchWithCors(url, options) {
     const providers = [
         'https://cors-anywhere.herokuapp.com/{}',
-        `https://cryptic-headland-94862.herokuapp.com/{}`,
+        'https://cryptic-headland-94862.herokuapp.com/{}',
     ];
 
     function tryFetch(i) {
