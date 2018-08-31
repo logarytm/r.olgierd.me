@@ -30,7 +30,10 @@ export default {
 
     findAll() {
         return this.findAllByStreets()
-            .then(R.compose(R.flatten, R.map(R.prop('stops'))));
+            .then(R.pipe(
+                R.map(R.prop('stops')),
+                R.flatten,
+            ));
     },
 
     findAllMatching(query) {
