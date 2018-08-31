@@ -56,7 +56,7 @@ module.exports = {
             template: 'src/index.html',
         }),
         new CopyWebpackPlugin([
-            { from: 'src/manifest.json' },
+            { from: 'src/favicon.ico' },
         ]),
     ],
 };
