@@ -1,6 +1,7 @@
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
 const pkg = require('../../package.json');
 
 module.exports = {
@@ -11,6 +12,13 @@ module.exports = {
         publicPath: '/',
         path: `${__dirname}/../../build`,
         filename: '[hash].js',
+    },
+    optimization: {
+        minimizer: [new UglifyjsWebpackPlugin({
+            uglifyOptions: {
+                keep_fnames: true,
+            },
+        })],
     },
     module: {
         rules: [

@@ -1,6 +1,3 @@
-import 'es6-promise';
-import 'whatwg-fetch';
-
 import UniversalRouter from 'universal-router';
 
 import hyperscript from 'hyperscript';
