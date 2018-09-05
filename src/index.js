@@ -6,8 +6,6 @@ import hyperx from 'hyperx';
 import routes from '~/routes.js';
 import onTargetsMatchingSelector from '~/on-targets-matching-selector.js';
 
-import '~/index.scss';
-
 const hx = hyperx(hyperscript);
 
 const router = new UniversalRouter(routes);
