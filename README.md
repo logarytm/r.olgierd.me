@@ -31,12 +31,6 @@ To build a distributable version:
 npm run build
 ```
 
-To start tests:
-
-```
-npm run test
-```
-
 To check for coding style issues:
 
 ```
