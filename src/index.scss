@@ -1,5 +1,5 @@
 body {
-  font-family: Arimo, Liberation Sans, Roboto, Helvetica, Arial, sans-serif;
+  font-family: Arimo, Liberation Sans, Roboto, Arial, Helvetica, sans-serif;
   overflow-y: scroll;
   font-size: 90%;
   background: #f9f9f9;
@@ -164,7 +164,8 @@ button, input, select, textarea {
   color: rgb(255, 255, 255);
   font-weight: bold;
   background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .2),
+              0 0 6px rgba(0, 0, 0, .1);
 }
 
 .navbar__home-link {

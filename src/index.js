@@ -40,7 +40,7 @@ function resolve(path) {
 }
 
 if (navigator.userAgent.includes('Windows NT')) {
-    document.body.style.fontFamily = 'Helvetica, Arial, sans-serif';
+    document.body.style.fontFamily = 'Arial, Helvetica, sans-serif';
 }
 
 resolve(window.location)
