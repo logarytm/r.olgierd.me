@@ -19,7 +19,7 @@ body {
 }
 
 .wrapper--main {
-  padding-top: 1ex;
+  padding-top: .75ex;
 }
 
 button, input, select, textarea {
@@ -71,7 +71,7 @@ button, input, select, textarea {
   }
 
   .stops__stop-item:last-child {
-    border-bottom: 1px #e6e6e6 solid;
+    border-bottom: 1px #e3e3e3 solid;
     padding-bottom: .25ex;
   }
 }
@@ -102,21 +102,16 @@ button, input, select, textarea {
 }
 
 .stop-search__input-wrap {
-  padding: 1.5ex .75ex 0 .75ex;
+  padding: .75ex;
 }
 
 @media screen and (max-width: 400px) {
-  .wrapper--main {
-    padding-top: 0;
-  }
-
   .stop-search {
-    margin-top: -1.5ex;
+    margin-top: -.75ex;
   }
 
   .stop-search__input-wrap {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0 0 .75ex 0;
   }
 
   .stop-search__input {
@@ -157,7 +152,8 @@ button, input, select, textarea {
 .departure-table__line {
   text-align: right;
   font-weight: bold;
-  width: 2em;
+  padding-left: 2ex;
+  width: .1em;
   white-space: nowrap;
 }
 
