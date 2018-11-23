@@ -31,7 +31,7 @@ function navigate(path) {
 }
 
 function resolve(path) {
-    return router.resolve(path).then(({ title, html }) => {
+    return router.resolve(path).then(({title, html}) => {
         document.title = title;
         document.querySelector('#title').textContent = title;
         document.querySelector('#main').innerHTML = '';

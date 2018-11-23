@@ -5,6 +5,7 @@ const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
 const pkg = require('../../package.json');
 
 module.exports = {
+    mode: 'production',
     entry: {
         main: './src/index.js',
     },
@@ -12,13 +13,6 @@ module.exports = {
         publicPath: '/',
         path: `${__dirname}/../../build`,
         filename: '[hash].js',
-    },
-    optimization: {
-        minimizer: [new UglifyjsWebpackPlugin({
-            uglifyOptions: {
-                keep_fnames: true,
-            },
-        })],
     },
     module: {
         rules: [

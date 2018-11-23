@@ -17,10 +17,6 @@ export default function CachedRepository(implementation, { repositoryName, metho
             throw new TypeError('Repository methods must have names.');
         }
 
-        function getCached(...args) {
-            return localForage.getItem(cacheKeyFor(methodName, args));
-        }
-
         return function cacheWrapped(...args) {
             return localForage.getItem(cacheKeyFor(methodName, args))
                 .then(function validate(result) {
@@ -39,11 +35,15 @@ export default function CachedRepository(implementation, { repositoryName, metho
         };
     }
 
-    return R.mapObjIndexed(function transform(value, key) {
+    const cached = R.mapObjIndexed(function transform(value, key) {
         if (methods.hasOwnProperty(key)) {
             return wrapInCache(value, methods[key]);
         }
 
         return value;
     }, implementation);
+
+    cached.clear = () => localForage.clear();
+
+    return cached;
 }
