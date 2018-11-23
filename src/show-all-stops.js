@@ -9,7 +9,7 @@ export default function showAllStops({ stopRepository }) {
         .then(streets => {
             return {
                 title: 'Przystanki',
-                html: StopListByStreet(streets),
+                html: StopListByStreet(streets, stopRepository.loadSpoilersForStreet.bind(stopRepository)),
             };
         });
 }

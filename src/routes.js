@@ -17,6 +17,10 @@ const stopRepository = CachedRepository(originalStopRepository, {
             cacheTTL: 24 * 60 * 60 * 14,
             expired: 'use-cached',
         },
+        getSpoilers: {
+            cacheTTL: 24 * 60 * 60 * 30,
+            expired: 'use-cached',
+        },
     },
 });
 

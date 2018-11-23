@@ -5,6 +5,7 @@ import hyperx from 'hyperx';
 
 import routes from '~/routes.js';
 import onTargetsMatchingSelector from '~/on-targets-matching-selector.js';
+import fetchWithCors from './fetch-with-cors';
 
 const hx = hyperx(hyperscript);
 
@@ -31,7 +32,7 @@ function navigate(path) {
 }
 
 function resolve(path) {
-    return router.resolve(path).then(({title, html}) => {
+    return router.resolve(path).then(({ title, html }) => {
         document.title = title;
         document.querySelector('#title').textContent = title;
         document.querySelector('#main').innerHTML = '';

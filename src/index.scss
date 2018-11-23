@@ -47,6 +47,10 @@ button, input, select, textarea {
   cursor: pointer;
 }
 
+.stops__stop-spoilers {
+  color: #888;
+}
+
 .stops__street-name:focus,
 .stops__stop-name:focus {
   outline: none;
@@ -85,6 +89,10 @@ button, input, select, textarea {
   padding: 1.5ex;
   color: inherit;
   text-decoration: none;
+}
+
+.stops__stop-item--spoilers .stops__stop-name {
+  padding: .75ex 1.5ex;
 }
 
 .stop-search__input {

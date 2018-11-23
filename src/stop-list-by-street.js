@@ -5,31 +5,61 @@ import onTargetsMatchingSelector from '~/on-targets-matching-selector.js';
 
 const hx = hyperx(hyperscript);
 
-function toggleStreet(e) {
-    const street = e.target.parentNode.querySelector('.stops__per-street-list');
-
-    e.target.classList.toggle('stops__street-name--expanded');
-    e.target.blur();
-    street.classList.toggle('u-hidden');
-}
-
-export default function StopListByStreet(streets) {
+export default function StopListByStreet(streets, loadSpoilersForStreet) {
     const html = hx`
-    <ul class="stops">
-        ${streets.map((street, index) => hx`
-            <li class="stops__street-item">
-                <button class="stops__street-name" type="button">${street.name}</button>
-                <ul class="u-hidden stops__per-street-list" data-street-index="${index}">
-                    ${street.stops.map(stop => hx`
-                        <li class="stops__stop-item"><a class="stops__stop-name" href="/departures/from-stop/${stop.id}">${stop.name}</a></li>
-                    `)}
-                </ul>
-            </li>`,
+        <ul class="stops">
+            ${streets.map((street, index) => hx`
+                <li class="stops__street-item">
+                    <button class="stops__street-name" type="button">${street.name}</button>
+                    <ul class="u-hidden stops__per-street-list" data-street-name="${street.name}" data-street-index="${index}">
+                        ${street.stops.map(stop => hx`
+                            <li class="stops__stop-item" data-stop-id="${stop.id}">
+                                <a class="stops__stop-name" href="/departures/from-stop/${stop.id}">${stop.name}</a>
+                            </li>
+                        `)}
+                    </ul>
+                </li>`,
     )}
-    </ul>
+        </ul>
     `;
 
     html.addEventListener('click', onTargetsMatchingSelector('.stops__street-name', toggleStreet));
 
+    const spoilersLoaded = {};
+
+    function toggleStreet(e) {
+        const street = e.target.parentNode.querySelector('.stops__per-street-list');
+
+        e.target.classList.toggle('stops__street-name--expanded');
+        e.target.blur();
+        street.classList.toggle('u-hidden');
+
+        let streetName = street.getAttribute('data-street-name');
+        if (spoilersLoaded[streetName]) {
+            return;
+        }
+
+        const directionLengthLimit = 20;
+
+        loadSpoilersForStreet(streetName, spoiler => {
+            const stopItem = street.querySelector(`[data-stop-id="${spoiler.id}"]`);
+            if (!stopItem) {
+                return;
+            }
+
+            stopItem.classList.add('stops__stop-item--spoilers');
+
+            stopItem.querySelector('.stops__stop-name').appendChild(hx`
+                <div class="stops__stop-spoilers">${spoiler.spoilers.map(({ line, direction }) => {
+                    if (direction.length > directionLengthLimit) {
+                        direction = direction.substr(0, directionLengthLimit).trim() + '…';
+                    }
+    
+                    return `${line} → ${direction}`;
+                }).join(', ')}</div>
+            `);
+        });
+    }
+
     return html;
-}
+};
