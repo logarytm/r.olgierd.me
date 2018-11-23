@@ -19,7 +19,7 @@ body {
 }
 
 .wrapper--main {
-  padding-top: .75ex;
+  padding: .75ex 0;
 }
 
 button, input, select, textarea {
@@ -196,10 +196,8 @@ button, input, select, textarea {
   text-decoration: none;
   line-height: 48px;
   display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 96px;
+  width: 50%;
+  float: left;
   padding: 0 1.5ex;
 }
 
