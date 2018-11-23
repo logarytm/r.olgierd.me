@@ -2,7 +2,7 @@ body {
   font-family: Arimo, Liberation Sans, Roboto, Helvetica, Arial, sans-serif;
   overflow-y: scroll;
   font-size: 90%;
-  background: #eee;
+  background: #f9f9f9;
   margin: 7ex 0 0 0;
   -webkit-tap-highlight-color: rgba(0, 0, 0, .2);
 }
@@ -53,7 +53,7 @@ button, input, select, textarea {
 .stops__street-name:focus,
 .stops__stop-name:focus {
   outline: none;
-  background: #ccc;
+  background: #ddd;
 }
 
 .stops__per-street-list {
@@ -63,9 +63,7 @@ button, input, select, textarea {
 }
 
 .stops__per-street-list:not(.u-hidden) {
-  background: #ddd;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  background: #eee;
 }
 
 .stops__stop-name {
@@ -75,20 +73,24 @@ button, input, select, textarea {
   text-decoration: none;
 }
 
+.stop-search__input-wrap {
+  margin: 0 1.5ex;
+  padding-top: 12px;
+}
+
 .stop-search__input {
-  background-color: #e5e5e5;
+  background-color: #f3f3f3;
   font: italic;
   width: 100%;
   box-sizing: border-box;
+  border-radius: 4px;
   padding: 1.5ex;
   padding: 1.5ex 1.5ex calc(1.5ex - 2px) 1.5ex;
   border: #ddd solid;
-  border-width: 0 0 2px 0;
+  border-width: 1px 1px 2px 1px;
 
   &:focus {
-    background-color: #ddd;
     outline: none;
-    border-color: #bbb;
   }
 }
 
@@ -161,12 +163,12 @@ button, input, select, textarea {
   height: 48px;
   color: rgb(255, 255, 255);
   font-weight: bold;
-  background: #888;
+  background: #fff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 }
 
 .navbar__home-link {
-  color: #fff;
+  color: #333;
   text-decoration: none;
   line-height: 48px;
   display: block;
@@ -176,12 +178,15 @@ button, input, select, textarea {
 
 .navbar__refresh-link {
   float: right;
-  color: #fff;
-  height: 48px;
-  line-height: 48px;
-  display: block;
-  font-weight: bold;
   text-decoration: none;
+  height: 48px;
+  width: 48px;
+  display: block;
+  background-image: url(refresh.svg);
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
+  background-position: 12px 12px;
+  text-indent: -99999px;
 }
 
 .navbar__search-link {

@@ -11,7 +11,7 @@ export default function fetchWithCors(url, options) {
                 }
                 
                 return response;
-            })
+            });
     }
 
     return Promise.race(providers.map(tryProvider))
