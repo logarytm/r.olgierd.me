@@ -3,6 +3,7 @@ import mountNode from '~/mount-node.js';
 
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
+import { setSearchIconTarget } from './global-state';
 
 const hx = hyperx(hyperscript);
 
@@ -16,6 +17,8 @@ export default function searchStops({ stopRepository }) {
 
     const input = root.querySelector('.stop-search__input');
     const destination = root.querySelector('.stop-search__stops');
+
+    setSearchIconTarget('/');
 
     input.addEventListener('input', debounce(() => {
         stopRepository.findAllMatching(input.value).then(replaceStops);

@@ -1,3 +1,5 @@
+import { enterOfflineState } from '~/global-state.js';
+
 export default function fetchWithCors(url, options) {
     const providers = [
         'https://cors-anywhere.herokuapp.com/{}',
@@ -9,13 +11,11 @@ export default function fetchWithCors(url, options) {
                 if (response.status >= 500) {
                     throw response;
                 }
-                
+
                 return response;
             });
     }
 
     return Promise.race(providers.map(tryProvider))
-        .catch(() => {
-            alert(`Problemy techniczne po stronie MPK Rzeszów lub bramki CORS.`);
-        });
+        .catch(enterOfflineState);
 }

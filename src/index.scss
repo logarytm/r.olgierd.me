@@ -1,16 +1,15 @@
 body {
-  font-family: Arimo, Liberation Sans, Roboto, Arial, Helvetica, sans-serif;
+  font-family: IBM Plex Sans, Arimo, Liberation Sans, Roboto, Arial, Helvetica, sans-serif;
   overflow-y: scroll;
   font-size: 90%;
-  background: #f9f9f9;
-  margin: 7ex 0 0 0;
+  background: #fff;
+  margin: 48px 0 0 0;
   -webkit-tap-highlight-color: rgba(0, 0, 0, .2);
 }
 
 .wrapper {
   max-width: 400px;
   margin: 0 auto;
-  padding: 0;
 
   &::after {
     content: "";
@@ -19,10 +18,8 @@ body {
   }
 }
 
-@media screen and (max-width: 400px) {
-  .stop-search {
-    margin-top: -1ex;
-  }
+.wrapper--main {
+  padding-top: 1ex;
 }
 
 button, input, select, textarea {
@@ -64,6 +61,23 @@ button, input, select, textarea {
 
 .stops__per-street-list:not(.u-hidden) {
   background: #eee;
+  border: #ccc solid;
+  border-width: 1px 0;
+  margin-bottom: .5ex;
+
+  .stops__stop-item:first-child {
+    border-top: 1px #e6e6e6 solid;
+    padding-top: .25ex;
+  }
+
+  .stops__stop-item:last-child {
+    border-bottom: 1px #e6e6e6 solid;
+    padding-bottom: .25ex;
+  }
+}
+
+.stops__street-name--expanded {
+  color: #039;
 }
 
 .stops__stop-name {
@@ -73,29 +87,42 @@ button, input, select, textarea {
   text-decoration: none;
 }
 
-.stop-search__input-wrap {
-  margin: 0 1.5ex;
-  padding-top: 12px;
-}
-
 .stop-search__input {
   background-color: #f3f3f3;
-  font: italic;
   width: 100%;
   box-sizing: border-box;
-  border-radius: 4px;
-  padding: 1.5ex;
-  padding: 1.5ex 1.5ex calc(1.5ex - 2px) 1.5ex;
+  padding: 1.5ex .75ex calc(1.5ex - 3px) 1.5ex;
   border: #ddd solid;
   border-width: 1px 1px 2px 1px;
+  border-radius: 4px;
 
   &:focus {
     outline: none;
   }
 }
 
-.stop-search__stops {
-  margin-top: 1ex;
+.stop-search__input-wrap {
+  padding: 1.5ex .75ex 0 .75ex;
+}
+
+@media screen and (max-width: 400px) {
+  .wrapper--main {
+    padding-top: 0;
+  }
+
+  .stop-search {
+    margin-top: -1.5ex;
+  }
+
+  .stop-search__input-wrap {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .stop-search__input {
+    border-radius: 0;
+    border-width: 0 0 2px 0;
+  }
 }
 
 .stop-list {
@@ -163,13 +190,13 @@ button, input, select, textarea {
   height: 48px;
   color: rgb(255, 255, 255);
   font-weight: bold;
-  background: #fff;
+  background: #039;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .2),
               0 0 6px rgba(0, 0, 0, .1);
 }
 
 .navbar__home-link {
-  color: #333;
+  color: #fff;
   text-decoration: none;
   line-height: 48px;
   display: block;
