@@ -207,6 +207,9 @@ button, input, select, textarea {
   width: 50%;
   float: left;
   padding: 0 1.5ex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .navbar__refresh-link {
