@@ -39,7 +39,7 @@ export default function StopListByStreet(streets, loadSpoilersForStreet) {
             return;
         }
 
-        const directionLengthLimit = 20;
+        const directionLengthLimit = 30;
 
         loadSpoilersForStreet(streetName, spoiler => {
             const stopItem = street.querySelector(`[data-stop-id="${spoiler.id}"]`);
@@ -50,15 +50,19 @@ export default function StopListByStreet(streets, loadSpoilersForStreet) {
             stopItem.classList.add('stops__stop-item--spoilers');
 
             stopItem.querySelector('.stops__stop-name').appendChild(hx`
-                <div class="stops__stop-spoilers">${spoiler.spoilers.map(({ line, direction }) => {
+                <div class="stops__stop-spoilers">${spoiler.spoilers.map(({ line, direction }, index) => {
                     if (direction.length > directionLengthLimit) {
-                        direction = direction.substr(0, directionLengthLimit).trim() + '…';
+                        direction = direction.replace(/\s.*$/, '') + '…';
                     }
     
-                    return `${line} → ${direction}`;
-                }).join(', ')}</div>
+                    const separator = index === 0 ? '' : ', ';
+                    
+                    return hx`<span class="stops__stop-spoiler">${separator}${line}<span class="stops__stop-spoiler-arrow">→</span>${direction}</span>`;
+                })}</div>
             `);
         });
+
+        spoilersLoaded[streetName] = true;
     }
 
     return html;

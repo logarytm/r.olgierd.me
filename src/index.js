@@ -5,7 +5,6 @@ import hyperx from 'hyperx';
 
 import routes from '~/routes.js';
 import onTargetsMatchingSelector from '~/on-targets-matching-selector.js';
-import fetchWithCors from './fetch-with-cors';
 
 const hx = hyperx(hyperscript);
 
@@ -42,6 +41,10 @@ function resolve(path) {
 
 if (navigator.userAgent.includes('Windows NT')) {
     document.body.style.fontFamily = 'Arial, Helvetica, sans-serif';
+}
+
+if (navigator.userAgent.includes('Android')) {
+    document.documentElement.classList.add('android');
 }
 
 resolve(window.location)

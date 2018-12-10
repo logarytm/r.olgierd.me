@@ -44,11 +44,8 @@ export default {
 
                 stops.forEach(stop => {
                     const match = /^(.*?)\s+(\d+?)$/.exec(stop.name);
-                    if (!match) {
-                        return;
-                    }
 
-                    const name = match[1];
+                    const name = match ? match[1] : name;
                     if (!seen[name]) {
                         seen[name] = { name, id: stop.id };
                     } else {
