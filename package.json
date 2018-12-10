@@ -10,8 +10,10 @@
     "travis": "npm run build && npm run lint"
   },
   "dependencies": {
+    "@babel/preset-es2015": "^7.0.0-beta.53",
     "babel-plugin-transform-async-functions": "^6.22.0",
-    "es6-promise": "^4.2.4",
+    "es6-promise": "^4.2.5",
+    "es6-shim": "^0.35.4",
     "hyperscript": "^2.0.2",
     "hyperx": "^2.4.0",
     "localforage": "^1.7.1",
@@ -63,7 +65,14 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-env"
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "chrome": "30"
+          }
+        }
+      ]
     ],
     "plugins": [
       "transform-async-to-generator"
