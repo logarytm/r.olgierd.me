@@ -25,7 +25,7 @@ export default function searchStops({ stopRepository }) {
     }, 250));
 
     function replaceStops(stops) {
-        mountNode(StopList(stops), destination);
+        mountNode(StopList(stops, stopRepository.getSpoilers.bind(stopRepository)), destination);
     }
 
     stopRepository.findAll()

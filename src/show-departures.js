@@ -31,7 +31,7 @@ export default function showDepartures(
 
     setInterval(updateNotice, 10 * 1000);
 
-    const destination = hx`<div><p class="notice">Loading…</p></div>`;
+    const destination = hx`<div><p class="notice">Ładowanie…</p></div>`;
 
     function DepartureRow(departure) {
         const extraDirectionClass = departure.direction.length > 30 ? 'departure-table__direction--long' : '';

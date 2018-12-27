@@ -2,6 +2,7 @@ import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
 import onTargetsMatchingSelector from '~/on-targets-matching-selector.js';
+import { renderSpoilers } from '~/stop-spoilers';
 
 const hx = hyperx(hyperscript);
 
@@ -39,27 +40,14 @@ export default function StopListByStreet(streets, loadSpoilersForStreet) {
             return;
         }
 
-        const directionLengthLimit = 30;
-
         loadSpoilersForStreet(streetName, spoiler => {
-            const stopItem = street.querySelector(`[data-stop-id="${spoiler.id}"]`);
-            if (!stopItem) {
+            const stopNode = street.querySelector(`[data-stop-id="${spoiler.id}"]`);
+            if (!stopNode) {
                 return;
             }
 
-            stopItem.classList.add('stops__stop-item--spoilers');
-
-            stopItem.querySelector('.stops__stop-name').appendChild(hx`
-                <div class="stops__stop-spoilers">${spoiler.spoilers.map(({ line, direction }, index) => {
-                    if (direction.length > directionLengthLimit) {
-                        direction = direction.replace(/\s.*$/, '') + '…';
-                    }
-    
-                    const separator = index === 0 ? '' : ', ';
-                    
-                    return hx`<span class="stops__stop-spoiler">${separator}${line}<span class="stops__stop-spoiler-arrow">→</span>${direction}</span>`;
-                })}</div>
-            `);
+            stopNode.classList.add('stops__stop-item--spoilers');
+            stopNode.querySelector('.stops__stop-name').appendChild(renderSpoilers(spoiler.spoilers));
         });
 
         spoilersLoaded[streetName] = true;
