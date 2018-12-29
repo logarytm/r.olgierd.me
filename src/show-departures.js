@@ -61,7 +61,7 @@ export default function showDepartures(
             <table class="departure-table">
                 ${departures.map(DepartureRow)}
             </table>
-            <p class="notice"></p>
+            <div class="notice"></div>
         </div>
         `;
     }

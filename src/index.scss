@@ -90,9 +90,13 @@ button, input, select, textarea {
   color: #039;
 }
 
+$spoilers-height: 1rem;
+$tight-spacing: .25rem;
+$loose-spacing: ($spoilers-height + 2 * $tight-spacing) / 2;
+
 .stops__stop-name {
   display: block;
-  padding: 1.5ex;
+  padding: $loose-spacing 1.5ex;
   color: inherit;
   text-decoration: none;
 }
@@ -101,6 +105,8 @@ button, input, select, textarea {
 .stop-spoilers__item {
   font-weight: normal;
   overflow: hidden;
+  height: $spoilers-height;
+  line-height: $spoilers-height;
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
@@ -110,8 +116,9 @@ button, input, select, textarea {
   white-space: nowrap;
 }
 
-.stops__stop-item--spoilers .stops__stop-name {
-  padding: .75ex 1.5ex !important;
+.stops__stop-item--spoilers .stops__stop-name,
+.stop-list__item--spoilers .stop-list__link {
+  padding: $tight-spacing 1.5ex !important;
 }
 
 .stop-spoilers__arrow {

@@ -28,7 +28,6 @@ function loadSpoilers(root, stops, getSpoilers) {
     }
 
     stops.forEach(function (stop) {
-        console.log(stop);
         const stopNode = root.querySelector(`[data-stop-id="${stop.id}"]`);
         getSpoilers(stop.id)
             .then(spoilers => {
