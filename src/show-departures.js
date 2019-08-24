@@ -2,6 +2,7 @@ import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
 import mountNode from '~/mount-node.js';
+import {setSearchIconTarget} from '~/global-state';
 
 import ticketsIcon from '~/tickets.svg';
 
@@ -14,8 +15,9 @@ export default function showDepartures(
         createDepartureObservable,
         stopRepository,
     },
-    { params },
+    {params},
 ) {
+    setSearchIconTarget('/stops');
 
     params.id = parseInt(params.id, 10);
 
@@ -25,13 +27,13 @@ export default function showDepartures(
     // root node which we then update when new data arrives. This is a bit
     // hacky and maybe may be done in a better way?
 
-    const observable = createDepartureObservable(params.id, { refreshInterval });
+    const observable = createDepartureObservable(params.id, {refreshInterval});
     observable.observe(renderNewDepartures);
     observable.refresh();
 
     setInterval(updateNotice, 10 * 1000);
 
-    const destination = hx`<div><p class="notice">Ładowanie…</p></div>`;
+    const destination = hx`<div><div class="notice">Ładowanie…</div></div>`;
 
     function DepartureRow(departure) {
         const extraDirectionClass = departure.direction.length > 30 ? 'departure-table__direction--long' : '';
@@ -58,10 +60,10 @@ export default function showDepartures(
     function DepartureTable(departures) {
         return hx`
         <div>
+            <div class="notice"></div>
             <table class="departure-table">
                 ${departures.map(DepartureRow)}
             </table>
-            <div class="notice"></div>
         </div>
         `;
     }
