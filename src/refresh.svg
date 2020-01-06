@@ -1,4 +1,1 @@
-<?xml version="1.0"?><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Odśwież</title>
-<path d="m12 4l0 14" stroke="#fff" stroke-width="2"/>
-<path d="m6 12l6 6l6 -6" stroke="#fff" stroke-width="2" fill="transparent"/>
-</svg>
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4v14" stroke="#fff" stroke-width="2"/><path d="M6 12l6 6 6-6" stroke="#fff" stroke-width="2" fill="transparent"/></svg>
