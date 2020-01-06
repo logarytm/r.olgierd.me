@@ -1,14 +1,10 @@
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
-
-const hx = hyperx(hyperscript);
+import Dom from './misc/dom';
+import { notice } from './ui/notice';
 
 export default function reloadStops({ stopRepository }) {
-    const root = hx`<div class="reload-stops">
-        <div class="notice">
-            Odświeżanie listy przystanków…
-        </div>
-    </div>`;
+    notice('Odświeżanie listy przystanków…');
+
+    const root = Dom.el('div.reload-stops');
 
     stopRepository
         .clear()

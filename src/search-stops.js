@@ -1,19 +1,20 @@
-import StopList from '~/stop-list';
-import mountNode from '~/mount-node';
+import StopList from './stop-list';
+import mountNode from './mount-node';
 
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
-import { setSearchIconTarget } from '~/ui/global-state';
-
-const hx = hyperx(hyperscript);
+import { setSearchIconTarget } from './ui/global-state';
+import Dom from './misc/dom';
 
 export default function searchStops({ stopRepository }) {
-    const root = hx`<div class="stop-search">
-        <div class="stop-search__input-wrap">
-            <input class="stop-search__input" type="text" placeholder="Nazwa przystanku, ulica" autofocus />
-        </div>
-        <div class="stop-search__stops"></div>
-    </div>`;
+    const root = Dom.el('div.stop-search', [
+        Dom.el('div.stop-search__input-wrap', [
+            Dom.el('input.stop-search__input', {
+                type: 'text',
+                placeholder: 'Nazwa przystanku, ulica',
+                autofocus: true,
+            }),
+        ]),
+        Dom.el('div.stop-search__stops'),
+    ]);
 
     const input = root.querySelector('.stop-search__input');
     const destination = root.querySelector('.stop-search__stops');

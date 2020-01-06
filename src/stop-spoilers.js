@@ -1,23 +1,24 @@
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
+import Dom from './misc/dom';
 
-const hx = hyperx(hyperscript);
-
-const directionLengthLimit = 30;
+const DIRECTION_LENGTH_LIMIT = 30;
 
 function renderSingleSpoiler(line, direction, isFirst) {
     const separator = isFirst ? '' : ', ';
-    if (direction.length > directionLengthLimit) {
+    if (direction.length > DIRECTION_LENGTH_LIMIT) {
         direction = direction.replace(/\s.*$/, '') + '…';
     }
 
-    return hx`<span class="stop-spoilers__item">${separator}${line}<span class="stop-spoilers__arrow">→</span>${direction}</span>`;
+    return Dom.el('span.stop-spoilers__item', [
+        separator,
+        line,
+        Dom.el('span.stop-spoilers__arrow', ['→']),
+        direction,
+    ]);
 }
 
 export function renderSpoilers(spoiler) {
-    return hx`
-        <div class="stop-spoilers">
-            ${spoiler.map(({ line, direction }, index) => renderSingleSpoiler(line, direction, index === 0))}
-        </div>
-    `;
+    return Dom.el(
+        'div.stop-spoilers',
+        spoiler.map(({ line, direction }, index) => renderSingleSpoiler(line, direction, index === 0)),
+    );
 }

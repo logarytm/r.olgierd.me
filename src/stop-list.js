@@ -1,24 +1,18 @@
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
-import { renderSpoilers } from '~/stop-spoilers';
-
-const hx = hyperx(hyperscript);
+import { renderSpoilers } from './stop-spoilers';
+import Dom from './misc/dom';
 
 // The maximum number of stops shown that we can load spoilers for.
 const maxStopsForSpoilers = 10;
 
 export default function StopList(stops, getSpoilers) {
-    const root = hx`
-        <ul class="stop-list">
-            ${stops.map(stop => hx`
-                <li class="stop-list__item" data-stop-id="${stop.id}">
-                    <a class="stop-list__link" href="/departures/from-stop/${stop.id}">${stop.name}</a>
-                </li>
-            `)}
-        </ul>
-    `;
+    const root = Dom.el('ul.stop-list', stops.map(stop => {
+        return Dom.el('li.stop-list__item', { 'data-stop-id': stop.id }, [
+            Dom.el('a.stop-list__link', { href: `/departures/from-stop/${stop.id}` }, [stop.name]),
+        ]);
+    }));
 
     loadSpoilers(root, stops, getSpoilers);
+
     return root;
 }
 

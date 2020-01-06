@@ -1,12 +1,7 @@
 import UniversalRouter from 'universal-router';
 
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
-
-import routes from '~/routes';
-import onTargetsMatchingSelector from '~/on-targets-matching-selector';
-
-const hx = hyperx(hyperscript);
+import routes from './routes';
+import onTargetsMatchingSelector from './on-targets-matching-selector';
 
 const router = new UniversalRouter(routes);
 

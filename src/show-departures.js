@@ -1,6 +1,3 @@
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
-
 import mountNode from './mount-node';
 import { setSearchIconTarget } from './ui/global-state';
 
@@ -9,8 +6,6 @@ import { notice } from './ui/notice';
 import Dom from './misc/dom';
 
 const REFRESH_INTERVAL = 5;
-
-const hx = hyperx(hyperscript);
 
 export default function showDepartures(
     {

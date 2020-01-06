@@ -1,6 +1,6 @@
 import partial from 'ramda/src/partial';
 
-import CachedRepository from '~/cached-repository';
+import CachedRepository from './cached-repository';
 
 import { default as originalStopRepository } from './stop-repository';
 import createDepartureObservable from './departure-observable';

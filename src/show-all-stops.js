@@ -1,19 +1,14 @@
 import StopListByStreet from './stop-list-by-street';
 import { setSearchIconTarget } from './ui/global-state';
 
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
-import mountNode from '~/mount-node';
+import mountNode from './mount-node';
 import { notice } from './ui/notice';
-
-const hx = hyperx(hyperscript);
+import Dom from './misc/dom';
 
 export default function showAllStops({ stopRepository }) {
     setSearchIconTarget('/stops');
 
-    var root = hx`
-        <div></div>
-    `;
+    var root = Dom.el('div');
 
     function replaceStops(streets) {
         var view = StopListByStreet(streets, stopRepository.loadSpoilersForStreet.bind(stopRepository));

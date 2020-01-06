@@ -4,7 +4,7 @@ import map from 'ramda/src/map';
 import applyTo from 'ramda/src/applyTo';
 
 function convertDepartures(rootNode) {
-    return R.map(function convertSingleDeparture(departureNode) {
+    return map(function convertSingleDeparture(departureNode) {
         const vehicleAttributes = departureNode.getAttribute('vuw');
 
         return {
