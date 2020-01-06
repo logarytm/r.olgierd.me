@@ -1,14 +1,14 @@
 import * as R from 'ramda';
 
-import CachedRepository from '~/cached-repository.js';
+import CachedRepository from '~/cached-repository';
 
-import { default as originalStopRepository } from '~/stop-repository.js';
-import createDepartureObservable from '~/departure-observable.js';
+import { default as originalStopRepository } from '~/stop-repository';
+import createDepartureObservable from '~/departure-observable';
 
-import showAllStops from '~/show-all-stops.js';
-import showDepartures from '~/show-departures.js';
-import searchStops from '~/search-stops.js';
-import reloadStops from '~/reload-stops.js';
+import showAllStops from '~/show-all-stops';
+import showDepartures from '~/show-departures';
+import searchStops from '~/search-stops';
+import reloadStops from '~/reload-stops';
 
 const stopRepository = CachedRepository(originalStopRepository, {
     repositoryName: 'stop-repository',

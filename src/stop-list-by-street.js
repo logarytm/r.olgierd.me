@@ -1,30 +1,29 @@
-import hyperscript from 'hyperscript';
-import hyperx from 'hyperx';
-
-import onTargetsMatchingSelector from '~/on-targets-matching-selector.js';
+import onTargetsMatchingSelector from '~/on-targets-matching-selector';
 import { renderSpoilers } from '~/stop-spoilers';
-
-const hx = hyperx(hyperscript);
+import Dom from './misc/dom';
 
 export default function StopListByStreet(streets, loadSpoilersForStreet) {
-    const html = hx`
-        <ul class="stops">
-            ${streets.map((street, index) => hx`
-                <li class="stops__street-item">
-                    <button class="stops__street-name" type="button">${street.name}</button>
-                    <ul class="u-hidden stops__per-street-list" data-street-name="${street.name}" data-street-index="${index}">
-                        ${street.stops.map(stop => hx`
-                            <li class="stops__stop-item" data-stop-id="${stop.id}">
-                                <a class="stops__stop-name" href="/departures/from-stop/${stop.id}">${stop.name}</a>
-                            </li>
-                        `)}
-                    </ul>
-                </li>`,
-    )}
-        </ul>
-    `;
+    const root = Dom.el('div.stop-list-by-street', [
+        Dom.el('ul.stops', streets.map((street, index) => {
+            return Dom.el('li.stops__street-item', [
+                Dom.el('button.stops__street-name', { type: 'button' }, [street.name]),
+                Dom.el(
+                    'ul.u-hidden.stops__per-street-list',
+                    {
+                        'data-street-name': street.name,
+                        'data-street-index': index,
+                    },
+                    street.stops.map(stop => {
+                        return Dom.el('li.stops__stop-item', { 'data-stop-id': stop.id }, [
+                            Dom.el('a.stops__stop-name', { href: `/departures/from-stop/${stop.id}` }, [stop.name]),
+                        ]);
+                    }),
+                ),
+            ]);
+        })),
+    ]);
 
-    html.addEventListener('click', onTargetsMatchingSelector('.stops__street-name', toggleStreet));
+    root.addEventListener('click', onTargetsMatchingSelector('.stops__street-name', toggleStreet));
 
     const spoilersLoaded = {};
 
@@ -53,5 +52,5 @@ export default function StopListByStreet(streets, loadSpoilersForStreet) {
         spoilersLoaded[streetName] = true;
     }
 
-    return html;
+    return root;
 };

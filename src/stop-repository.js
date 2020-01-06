@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import fetchWithCors from '~/fetch-with-cors.js';
+import fetchWithCors from '~/fetch-with-cors';
 
 export default {
     findAllByStreets() {
@@ -37,28 +37,33 @@ export default {
     },
 
     loadSpoilersForStreet(name, consumer) {
+        const stopNameNumberRegExp = /^(.*?)\s+(\d+?)$/;
+        const stopNameIndex = 1;
+
         return this.findByStreet(name)
             .then(stops => {
                 const seen = {};
-                const samename = {};
+                const sameName = {};
 
                 stops.forEach(stop => {
-                    const match = /^(.*?)\s+(\d+?)$/.exec(stop.name);
+                    const match = stopNameNumberRegExp.exec(stop.name);
 
-                    const name = match ? match[1] : name;
-                    if (!seen[name]) {
-                        seen[name] = { name, id: stop.id };
+                    // as an example, if the stop name is "Piłsudskiego
+                    const basicName = match ? match[stopNameIndex] : stop.name;
+
+                    if (!seen[basicName]) {
+                        seen[basicName] = { name: basicName, id: stop.id };
                     } else {
-                        if (!samename[name]) {
-                            samename[name] = [seen[name]];
+                        if (!sameName[basicName]) {
+                            sameName[basicName] = [seen[basicName]];
                         }
 
-                        samename[name].push({ name, id: stop.id });
+                        sameName[basicName].push({ name: basicName, id: stop.id });
                     }
                 });
 
-                return Object.keys(samename)
-                    .map(name => samename[name])
+                return Object.keys(sameName)
+                    .map(name => sameName[name])
                     .reduce((a, b) => [...a, ...b], []);
             })
             .then(stops => {

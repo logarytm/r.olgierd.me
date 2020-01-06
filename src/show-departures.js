@@ -1,10 +1,11 @@
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
-import mountNode from '~/mount-node.js';
-import {setSearchIconTarget} from '~/global-state';
+import mountNode from '~/mount-node';
+import {setSearchIconTarget} from '~/ui/global-state';
 
 import ticketsIcon from '~/tickets.svg';
+import { notice } from './ui/notice';
 
 const refreshInterval = 30;
 
@@ -22,6 +23,7 @@ export default function showDepartures(
     params.id = parseInt(params.id, 10);
 
     let lastRefreshedAt = null;
+    let refreshTimer = null;
 
     // We need the departures to refresh in place, so we create and return a
     // root node which we then update when new data arrives. This is a bit
@@ -31,9 +33,9 @@ export default function showDepartures(
     observable.observe(renderNewDepartures);
     observable.refresh();
 
-    setInterval(updateNotice, 10 * 1000);
+    const destination = hx`<div></div>`;
 
-    const destination = hx`<div><div class="notice">Ładowanie…</div></div>`;
+    const loaded = notice('Ładowanie…');
 
     function DepartureRow(departure) {
         const extraDirectionClass = departure.direction.length > 30 ? 'departure-table__direction--long' : '';
@@ -48,8 +50,7 @@ export default function showDepartures(
         return hx`
         <tr class="departure-table__row">
             <td class="departure-table__line">${departure.line}</td>
-            <td class="departure-table__direction ${extraDirectionClass}">
-                <span>${departure.direction}</span>
+            <td class="departure-table__direction ${extraDirectionClass}"><span>${departure.direction}</span>
                 ${icons}
             </td>
             <td class="departure-table__time">${departure.time}</td>
@@ -60,7 +61,6 @@ export default function showDepartures(
     function DepartureTable(departures) {
         return hx`
         <div>
-            <div class="notice"></div>
             <table class="departure-table">
                 ${departures.map(DepartureRow)}
             </table>
@@ -72,18 +72,21 @@ export default function showDepartures(
         const now = new Date();
         let minutesSinceRefresh = Math.floor((now - lastRefreshedAt) / (1000 * 60));
         if (lastRefreshedAt === null || minutesSinceRefresh < 60) {
-            return;
+            // return;
         }
 
-        destination.querySelector('.notice').innerHTML =
-            `Nieaktualne dane (<a href="${window.location.pathname}">odśwież teraz</a>).`;
+        notice(`Nieaktualne dane (<a href="${window.location.pathname}">odśwież teraz</a>).`);
     }
 
     function renderNewDepartures(departures) {
+        loaded();
         lastRefreshedAt = new Date();
 
+        if (!refreshTimer) {
+            refreshTimer = setInterval(updateNotice, 120 * 1000);
+        }
+
         mountNode(DepartureTable(departures), destination);
-        updateNotice();
     }
 
     return stopRepository.getNameById(params.id)
@@ -91,6 +94,10 @@ export default function showDepartures(
             return {
                 title: name,
                 html: destination,
+                didUnmount() {
+                    observable.stop();
+                    clearInterval(refreshTimer);
+                },
             };
         });
 }

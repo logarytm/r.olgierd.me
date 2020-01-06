@@ -1,4 +1,5 @@
-import { enterOfflineState } from '~/global-state.js';
+import race from './misc/promise-race';
+import { enterOfflineState } from '~/ui/global-state';
 
 export default function fetchWithCors(url, options) {
     const providers = [
@@ -17,6 +18,6 @@ export default function fetchWithCors(url, options) {
             });
     }
 
-    return Promise.race(providers.map(tryProvider))
+    return race(providers.map(tryProvider))
         .catch(enterOfflineState);
 }

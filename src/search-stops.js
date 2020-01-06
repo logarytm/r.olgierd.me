@@ -1,16 +1,16 @@
-import StopList from '~/stop-list.js';
-import mountNode from '~/mount-node.js';
+import StopList from '~/stop-list';
+import mountNode from '~/mount-node';
 
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
-import { setSearchIconTarget } from './global-state';
+import { setSearchIconTarget } from '~/ui/global-state';
 
 const hx = hyperx(hyperscript);
 
 export default function searchStops({ stopRepository }) {
     const root = hx`<div class="stop-search">
         <div class="stop-search__input-wrap">
-            <input class="stop-search__input" type="text" placeholder="Quo vadis?" autofocus />
+            <input class="stop-search__input" type="text" placeholder="Nazwa przystanku, ulica" autofocus />
         </div>
         <div class="stop-search__stops"></div>
     </div>`;
@@ -34,7 +34,7 @@ export default function searchStops({ stopRepository }) {
             input.focus();
         });
 
-    return { title: 'Szukaj przystanków', html: root };
+    return { title: 'Szukaj przystanków', html: root, didMount: () => input.focus() };
 }
 
 // https://remysharp.com/2010/07/21/throttling-function-calls

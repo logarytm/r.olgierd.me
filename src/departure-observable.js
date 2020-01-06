@@ -1,6 +1,6 @@
 import * as R from 'ramda';
-import parseXMLString from '~/parse-xml-string.js';
-import fetchWithCors from '~/fetch-with-cors.js';
+import parseXMLString from '~/parse-xml-string';
+import fetchWithCors from '~/fetch-with-cors';
 
 function convertDepartures(rootNode) {
     return R.map(function convertSingleDeparture(departureNode) {

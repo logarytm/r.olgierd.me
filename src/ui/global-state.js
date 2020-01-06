@@ -23,5 +23,4 @@ export function setSearchIconTarget(url) {
 }
 
 window.addEventListener('online', leaveOfflineState);
-
 window.addEventListener('offline', enterOfflineState);

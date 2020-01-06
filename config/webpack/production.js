@@ -1,7 +1,9 @@
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
+const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 const pkg = require('../../package.json');
 
 module.exports = {
@@ -25,7 +27,7 @@ module.exports = {
                 test: /\.scss$/,
                 use: [
                     {
-                        loader: 'style-loader',
+                        loader: MiniCssExtractPlugin.loader,
                     },
                     {
                         loader: 'css-loader',
@@ -56,8 +58,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Loading…',
             template: 'src/index.html',
-            filename: '../tmp/index.html',
+            filename: 'index.html',
         }),
+        new MiniCssExtractPlugin({
+            filename: '[id].[hash].css',
+        }),
+        new CssoWebpackPlugin(),
         new CopyWebpackPlugin([
             { from: 'src/favicon.ico' },
         ]),
