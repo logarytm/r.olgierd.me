@@ -1,6 +1,7 @@
-import * as R from 'ramda';
 import parseXMLString from './parse-xml-string';
 import fetchWithCors from './fetch-with-cors';
+import map from 'ramda/src/map';
+import applyTo from 'ramda/src/applyTo';
 
 function convertDepartures(rootNode) {
     return R.map(function convertSingleDeparture(departureNode) {
@@ -32,7 +33,7 @@ export default function createDepartureObservable(stopId, { refreshInterval }) {
             .then(response => response.text())
             .then(parseXMLString)
             .then(convertDepartures)
-            .then(departures => Promise.all(R.map(R.applyTo(departures), observers)));
+            .then(departures => Promise.all(map(applyTo(departures), observers)));
     }
 
     return {

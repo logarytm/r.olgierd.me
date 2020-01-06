@@ -1,13 +1,14 @@
 import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
-import mountNode from '~/mount-node';
-import { setSearchIconTarget } from '~/ui/global-state';
+import mountNode from './mount-node';
+import { setSearchIconTarget } from './ui/global-state';
 
-import ticketsIcon from '~/tickets.svg';
+import ticketsIcon from './tickets.svg';
 import { notice } from './ui/notice';
+import Dom from './misc/dom';
 
-const refreshInterval = 5;
+const REFRESH_INTERVAL = 5;
 
 const hx = hyperx(hyperscript);
 
@@ -25,75 +26,65 @@ export default function showDepartures(
     let lastRefreshedAt = null;
     let refreshTimer = null;
 
-    // We need the departures to refresh in place, so we create and return a
-    // root node which we then update when new data arrives. This is a bit
-    // hacky and maybe may be done in a better way?
-
-    const observable = createDepartureObservable(params.id, { refreshInterval });
+    const observable = createDepartureObservable(params.id, { refreshInterval: REFRESH_INTERVAL });
     observable.observe(renderNewDepartures);
     observable.refresh();
 
-    const destination = hx`<div></div>`;
+    const root = Dom.el('div');
 
-    const loaded = notice('Ładowanie…');
+    const notifyDoneLoading = notice('Ładowanie…');
 
     function DepartureRow(departure) {
-        const extraDirectionClass = departure.direction.length > 30 ? 'departure-table__direction--long' : '';
         const icons = [];
 
         if (departure.hasTicketMachine) {
-            icons.push(hx`
-                <img class="icon icon--tickets" src="${ticketsIcon}" alt="Biletomat">
-            `);
+            icons.push(Dom.el('img.icon.icon--tickets', { src: ticketsIcon, alt: 'Autobus ma biletomat' }));
         }
 
-        return hx`
-        <tr class="departure-table__row">
-            <td class="departure-table__line">${departure.line}</td>
-            <td class="departure-table__direction ${extraDirectionClass}"><span>${departure.direction}</span>
-                ${icons}
-            </td>
-            <td class="departure-table__time">${departure.time}</td>
-        </tr>
-    `;
+        return Dom.el('tr.departure-table__row', [
+            Dom.el('td.departure-table__line', [departure.line]),
+            Dom.el('td.departure-table__direction', {
+                className: [departure.direction.length > 30 ? 'departure-table__direction--long' : null],
+            }, [
+                Dom.el('span', [departure.direction]),
+                ...icons,
+            ]),
+            Dom.el('td.departure-table__time', [departure.time]),
+        ]);
     }
 
     function DepartureTable(departures) {
-        return hx`
-        <div>
-            <table class="departure-table">
-                ${departures.map(DepartureRow)}
-            </table>
-        </div>
-        `;
+        return Dom.el('div', [
+            Dom.el('table.departure-table', departures.map(DepartureRow)),
+        ]);
     }
 
     function updateNotice() {
         const now = new Date();
         let minutesSinceRefresh = Math.floor((now - lastRefreshedAt) / (1000 * 60));
         if (lastRefreshedAt === null || minutesSinceRefresh < 60) {
-            // return;
+            return;
         }
 
         notice(`Nieaktualne dane (<a href="${window.location.pathname}">odśwież teraz</a>).`);
     }
 
     function renderNewDepartures(departures) {
-        loaded();
+        notifyDoneLoading();
         lastRefreshedAt = new Date();
 
         if (!refreshTimer) {
             refreshTimer = setInterval(updateNotice, 120 * 1000);
         }
 
-        mountNode(DepartureTable(departures), destination);
+        mountNode(DepartureTable(departures), root);
     }
 
     return stopRepository.getNameById(params.id)
         .then(name => {
             return {
                 title: name,
-                html: destination,
+                html: root,
                 didUnmount() {
                     observable.stop();
                     clearInterval(refreshTimer);

@@ -1,5 +1,5 @@
-const localForage = require('localforage');
-const R = require('ramda');
+import localForage from 'localforage';
+import mapObjIndexed from 'ramda/src/mapObjIndexed';
 
 export default function CachedRepository(implementation, { repositoryName, methods }) {
     function cacheKeyFor(methodName, args) {
@@ -35,7 +35,7 @@ export default function CachedRepository(implementation, { repositoryName, metho
         };
     }
 
-    const cached = R.mapObjIndexed(function transform(value, key) {
+    const cached = mapObjIndexed(function transform(value, key) {
         if (methods.hasOwnProperty(key)) {
             return wrapInCache(value, methods[key]);
         }

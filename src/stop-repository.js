@@ -1,4 +1,7 @@
-import * as R from 'ramda';
+import pipe from 'ramda/src/pipe';
+import prop from 'ramda/src/prop';
+import map from 'ramda/src/map';
+import flatten from 'ramda/src/flatten';
 
 import fetchWithCors from '~/fetch-with-cors';
 
@@ -11,11 +14,11 @@ export default {
         const convertSingleStreet = function convertSingleStreet([_, name, stops]) {
             return {
                 name,
-                stops: R.map(convertSingleStop, stops),
+                stops: map(convertSingleStop, stops),
             };
         };
 
-        const convertStops = R.map(convertSingleStreet);
+        const convertStops = map(convertSingleStreet);
 
         return fetchWithCors('http://einfo.erzeszow.pl/Home/GetBusStopList?q=&ttId=0')
             .then(response => response.json())
@@ -30,9 +33,9 @@ export default {
 
     findAll() {
         return this.findAllByStreets()
-            .then(R.pipe(
-                R.map(R.prop('stops')),
-                R.flatten,
+            .then(pipe(
+                map(prop('stops')),
+                flatten,
             ));
     },
 

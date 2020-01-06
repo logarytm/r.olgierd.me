@@ -1,14 +1,14 @@
-import * as R from 'ramda';
+import partial from 'ramda/src/partial';
 
 import CachedRepository from '~/cached-repository';
 
-import { default as originalStopRepository } from '~/stop-repository';
-import createDepartureObservable from '~/departure-observable';
+import { default as originalStopRepository } from './stop-repository';
+import createDepartureObservable from './departure-observable';
 
-import showAllStops from '~/show-all-stops';
-import showDepartures from '~/show-departures';
-import searchStops from '~/search-stops';
-import reloadStops from '~/reload-stops';
+import showAllStops from './show-all-stops';
+import showDepartures from './show-departures';
+import searchStops from './search-stops';
+import reloadStops from './reload-stops';
 
 const stopRepository = CachedRepository(originalStopRepository, {
     repositoryName: 'stop-repository',
@@ -27,19 +27,19 @@ const stopRepository = CachedRepository(originalStopRepository, {
 export default [
     {
         path: '/',
-        action: R.partial(showAllStops, [{ stopRepository }]),
+        action: partial(showAllStops, [{ stopRepository }]),
     },
     {
         path: '/stops',
-        action: R.partial(searchStops, [{ stopRepository }]),
+        action: partial(searchStops, [{ stopRepository }]),
     },
     {
         path: '/refresh',
-        action: R.partial(reloadStops, [{ stopRepository }]),
+        action: partial(reloadStops, [{ stopRepository }]),
     },
     {
         path: '/departures/from-stop/:id',
-        action: R.partial(showDepartures, [{
+        action: partial(showDepartures, [{
             createDepartureObservable,
             stopRepository,
         }]),
