@@ -2,12 +2,12 @@ import hyperscript from 'hyperscript';
 import hyperx from 'hyperx';
 
 import mountNode from '~/mount-node';
-import {setSearchIconTarget} from '~/ui/global-state';
+import { setSearchIconTarget } from '~/ui/global-state';
 
 import ticketsIcon from '~/tickets.svg';
 import { notice } from './ui/notice';
 
-const refreshInterval = 30;
+const refreshInterval = 5;
 
 const hx = hyperx(hyperscript);
 
@@ -16,7 +16,7 @@ export default function showDepartures(
         createDepartureObservable,
         stopRepository,
     },
-    {params},
+    { params },
 ) {
     setSearchIconTarget('/stops');
 
@@ -29,7 +29,7 @@ export default function showDepartures(
     // root node which we then update when new data arrives. This is a bit
     // hacky and maybe may be done in a better way?
 
-    const observable = createDepartureObservable(params.id, {refreshInterval});
+    const observable = createDepartureObservable(params.id, { refreshInterval });
     observable.observe(renderNewDepartures);
     observable.refresh();
 
