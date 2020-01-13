@@ -4,21 +4,22 @@ import map from 'ramda/src/map';
 import flatten from 'ramda/src/flatten';
 
 import fetchWithCors from './fetch-with-cors';
+import { getStopsWithDuplicateNames } from './misc/stops/stop-helpers';
 
 export default {
     findAllByStreets() {
-        const convertSingleStop = function convertSingleStop([id, name]) {
-            return { id, name };
-        };
+        function convertStreetListItem([_, name, stops]) {
+            function convertStopListItem([id, name]) {
+                return { id, name };
+            };
 
-        const convertSingleStreet = function convertSingleStreet([_, name, stops]) {
             return {
                 name,
-                stops: map(convertSingleStop, stops),
+                stops: map(convertStopListItem, stops),
             };
         };
 
-        const convertStops = map(convertSingleStreet);
+        const convertStops = map(convertStreetListItem);
 
         return fetchWithCors('http://einfo.erzeszow.pl/Home/GetBusStopList?q=&ttId=0')
             .then(response => response.json())
@@ -39,36 +40,11 @@ export default {
             ));
     },
 
+    // eg. when stops == [{ id: 123, name: "Architektów 01" }, { id: 456, name: "Architektów 02" }],
+    // returns { "Architektów": [ { id: 123, name: "Architektów 01" }, { id: 456, name: "Architektów 02" } ] }
     loadSpoilersForStreet(name, consumer) {
-        const stopNameNumberRegExp = /^(.*?)\s+(\d+?)$/;
-        const stopNameIndex = 1;
-
         return this.findByStreet(name)
-            .then(stops => {
-                const seen = {};
-                const sameName = {};
-
-                stops.forEach(stop => {
-                    const match = stopNameNumberRegExp.exec(stop.name);
-
-                    // as an example, if the stop name is "Piłsudskiego
-                    const basicName = match ? match[stopNameIndex] : stop.name;
-
-                    if (!seen[basicName]) {
-                        seen[basicName] = { name: basicName, id: stop.id };
-                    } else {
-                        if (!sameName[basicName]) {
-                            sameName[basicName] = [seen[basicName]];
-                        }
-
-                        sameName[basicName].push({ name: basicName, id: stop.id });
-                    }
-                });
-
-                return Object.keys(sameName)
-                    .map(name => sameName[name])
-                    .reduce((a, b) => [...a, ...b], []);
-            })
+            .then(stops => getStopsWithDuplicateNames(stops))
             .then(stops => {
                 stops.forEach(stop => {
                     this.getSpoilers(stop.id).then(spoilers => {
