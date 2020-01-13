@@ -17,7 +17,9 @@ export function getStopsWithDuplicateNames(stops) {
         if (!seen[numberlessName]) {
             seen[numberlessName] = { name: numberlessName, id: stop.id };
         } else {
+            // this numberless name was already seen, which means we have a duplicate!
             if (!duplicateStopsForBasicName[numberlessName]) {
+                // this is the first duplicate, but we have to add the stop previously seen
                 duplicateStopsForBasicName[numberlessName] = [seen[numberlessName]];
             }
 
@@ -25,5 +27,5 @@ export function getStopsWithDuplicateNames(stops) {
         }
     });
 
-    return Object.values(duplicateStopsForBasicName).reduce(flatten);
+    return Object.values(duplicateStopsForBasicName).reduce((a, b) => [...a, ...b], []);
 }

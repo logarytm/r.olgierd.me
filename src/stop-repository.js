@@ -40,8 +40,6 @@ export default {
             ));
     },
 
-    // eg. when stops == [{ id: 123, name: "Architektów 01" }, { id: 456, name: "Architektów 02" }],
-    // returns { "Architektów": [ { id: 123, name: "Architektów 01" }, { id: 456, name: "Architektów 02" } ] }
     loadSpoilersForStreet(name, consumer) {
         return this.findByStreet(name)
             .then(stops => getStopsWithDuplicateNames(stops))
