@@ -3,7 +3,7 @@ import prop from 'ramda/src/prop';
 import map from 'ramda/src/map';
 import flatten from 'ramda/src/flatten';
 
-import fetchWithCors from '~/fetch-with-cors';
+import fetchWithCors from './fetch-with-cors';
 
 export default {
     findAllByStreets() {

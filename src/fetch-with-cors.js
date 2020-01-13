@@ -1,5 +1,5 @@
 import race from './misc/promise-race';
-import { enterOfflineState } from '~/ui/global-state';
+import { enterOfflineState } from './ui/global-state';
 
 const knownProviders = [
     'https://cors-anywhere.herokuapp.com/{}',
