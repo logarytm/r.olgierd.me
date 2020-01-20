@@ -6,7 +6,7 @@ not support:
 
 -   ~~Disambiguating between two stops with the same name (hint: compare the
     parity of the number after the name)~~ implemented in
-    https://github.com/logarytm/r.olgierd.me/commit/ff95f9c299dbabfe7b68887dc42f7178059deb8b,
+    ff95f9c299dbabfe7b68887dc42f7178059deb8b,
 -   Showing schedules (it only shows real-time departures),
 -   Showing the full route.
 
