@@ -5,8 +5,7 @@ departures in my city, so I wrote my own. This one is very minimal, as it does
 not support:
 
 -   ~~Disambiguating between two stops with the same name (hint: compare the
-    parity of the number after the name)~~ implemented in
-    ff95f9c299dbabfe7b68887dc42f7178059deb8b,
+    parity of the number after the name)~~ implemented,
 -   Showing schedules (it only shows real-time departures),
 -   Showing the full route.
 
