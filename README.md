@@ -4,10 +4,11 @@ I didn't like the official [web thing](http://einfo.erzeszow.pl/) for bus
 departures in my city, so I wrote my own. This one is very minimal, as it does
 not support:
 
--   Disambiguating between two stops with the same name (hint: compare the
-    parity of the number after the name),
+-   ~~Disambiguating between two stops with the same name (hint: compare the
+    parity of the number after the name)~~ implemented in
+    https://github.com/logarytm/r.olgierd.me/commit/ff95f9c299dbabfe7b68887dc42f7178059deb8b,
 -   Showing schedules (it only shows real-time departures),
--   Showing the full route, or the schedules.
+-   Showing the full route.
 
 I don't plan on implementing these features myself. Pull requests are always
 welcome, though.
