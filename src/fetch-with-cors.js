@@ -7,6 +7,18 @@ const knownProviders = [
 ];
 const usedProviders = [...knownProviders];
 
+function rememberFastestProvider(url, originalUrl) {
+    const bestProvider = knownProviders
+        .find(providerUrl => url === makeUrlForProvider(providerUrl, originalUrl));
+
+    if (!bestProvider) {
+        return;
+    }
+
+    usedProviders.length = 1;
+    usedProviders[0] = bestProvider;
+}
+
 export default function fetchWithCors(url, options) {
     function tryProvider(providerUrl) {
         return fetch(makeUrlForProvider(providerUrl, url), options)
@@ -21,15 +33,7 @@ export default function fetchWithCors(url, options) {
 
     return race(usedProviders.map(tryProvider))
         .then(result => {
-            // memoize which provider returned a response first and use only that from now on
-            const effectiveUrl = result.url;
-            const bestProvider = knownProviders
-                .find(providerUrl => effectiveUrl === makeUrlForProvider(providerUrl, url));
-
-            if (!bestProvider) return; // ???
-
-            usedProviders.length = 1;
-            usedProviders[0] = bestProvider;
+            rememberFastestProvider(result.url, url);
 
             return result;
         })
