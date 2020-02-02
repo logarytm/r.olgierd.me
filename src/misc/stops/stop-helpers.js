@@ -1,5 +1,3 @@
-import flatten from 'ramda/src/flatten';
-
 export function getStopsWithDuplicateNames(stops) {
     const seen = {};
     const duplicateStopsForBasicName = {};
