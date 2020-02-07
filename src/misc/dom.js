@@ -7,13 +7,33 @@ const Dom = {
         }
 
         if (typeof attributes === 'function') {
+            // el('div', element => ...) -> el('div', {}, element => ...)
             callback = attributes;
             attributes = {};
         }
 
         if (typeof children === 'function') {
+            // el('div', {}, element => ...) -> el('div', {}, [], element => ...)
             callback = children;
             children = [];
+        }
+
+        if (
+            (typeof attributes !== 'object' || attributes === null)
+            || !Array.isArray(children)
+            || typeof callback !== 'function'
+        ) {
+            console.error('Invalid call to el(). The signature is el(tagName: string, [attributes: Object], [children: Array], [callback: Function]).');
+            return;
+        }
+
+        if (Object.prototype.toString.call(attributes) !== '[object Object]') {
+            let message = 'Dubious call to el(): attributes is not a plain Object.';
+            if (attributes instanceof Node) {
+                message += '\nNotice: Child DOM nodes should be passed in an array, not directly as arguments to el().';
+            }
+            console.warn(message);
+            return;
         }
 
         if (Array.isArray(attributes.className)) {
@@ -69,6 +89,10 @@ const Dom = {
                     $element.appendChild(child);
                     break;
             }
+        }
+
+        if (typeof callback === 'function') {
+            callback($element);
         }
 
         return $element;
