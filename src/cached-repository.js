@@ -11,12 +11,7 @@ export default function CachedRepository(implementation, { repositoryName, metho
             Math.abs(Date.now() - result.timestamp) > 1000 * cacheTTL;
     }
 
-    function wrapInCache(f, methodOptions) {
-        const methodName = f.name;
-        if (!methodName) {
-            throw new TypeError('Repository methods must have names.');
-        }
-
+    function wrapInCache(f, methodName, methodOptions) {
         return function cacheWrapped(...args) {
             return localForage.getItem(cacheKeyFor(methodName, args))
                 .then(function validate(result) {
@@ -37,7 +32,7 @@ export default function CachedRepository(implementation, { repositoryName, metho
 
     const cached = mapObjIndexed(function transform(value, key) {
         if (methods.hasOwnProperty(key)) {
-            return wrapInCache(value, methods[key]);
+            return wrapInCache(value, key, methods[key]);
         }
 
         return value;

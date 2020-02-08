@@ -14,14 +14,14 @@ module.exports = {
     output: {
         publicPath: '/',
         path: `${__dirname}/../../build`,
-        filename: '[hash].js',
+        filename: '[id].[hash].js',
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader: 'babel-loader?plugins[]=@babel/plugin-syntax-dynamic-import',
             },
             {
                 test: /\.scss$/,

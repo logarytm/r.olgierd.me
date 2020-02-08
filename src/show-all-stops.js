@@ -19,7 +19,6 @@ export default function showAllStops({ stopRepository }) {
         .findAllByStreets()
         .then(replaceStops)
         .catch(reason => {
-            console.log(reason);
             notice('Sprawdź połączenie z&nbsp;internetem.');
         });
 

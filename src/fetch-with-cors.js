@@ -19,6 +19,7 @@ function rememberFastestProvider(url, originalUrl) {
     usedProviders[0] = bestProvider;
 }
 
+/** @returns {Promise<Response>} */
 export default function fetchWithCors(url, options) {
     function tryProvider(providerUrl) {
         return fetch(makeUrlForProvider(providerUrl, url), options)

@@ -61,7 +61,7 @@ const Dom = {
 
         Object.assign($element, attributes);
 
-        for (const child of children) {
+        children.forEach(child => {
             switch (typeof child) {
                 case 'undefined':
                     break;
@@ -89,7 +89,7 @@ const Dom = {
                     $element.appendChild(child);
                     break;
             }
-        }
+        });
 
         if (typeof callback === 'function') {
             callback($element);
